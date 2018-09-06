@@ -84,8 +84,9 @@ public class ColorierToComplete
      */
     public static void colorier(char [][] dessin, int lig, int col)
     {  
-        if(dessin[lig][col] != '+') {
+        if(dessin[lig][col] == '.') {
         	dessin[lig][col] = 'x';
+        	
         	colorier(dessin, lig + 1, col);
         	colorier(dessin, lig - 1, col);
         	colorier(dessin, lig, col + 1);
