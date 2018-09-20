@@ -33,19 +33,20 @@ public class Fifo<E> {
 	
 	public void ajouter(E element) {
 		Cellule<E> cellule = new Cellule<>(element);
-		cellule.lien = queue;
-		queue = cellule;
 		
-		if (tete == null) {
+		if (estVide()) {
 			tete = cellule;
 		}
+		
+		queue = cellule;
+		queue.lien = cellule;
 	}
 	
 	public E retirer() {
 		Cellule<E> temp = tete;
 		tete = tete.lien;
 		
-		if (tete.equals(queue)) {
+		if (estVide()) {
 			queue = null;
 		}
 		
@@ -55,10 +56,10 @@ public class Fifo<E> {
 	public String toString() {
 		StringBuilder chaine = new StringBuilder();
 		
-		Cellule<E> lien = tete;
-		while (lien != null) {
-			chaine.append("\n").append(lien.donnee);
-			lien = lien.lien;
+		Cellule<E> lienLocal = tete;
+		while (lienLocal != null) {
+			chaine.append("\n").append(lienLocal.donnee);
+			lienLocal = lienLocal.lien;
 		}
 		
 		return chaine.toString();
