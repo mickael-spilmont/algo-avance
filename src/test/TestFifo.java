@@ -17,12 +17,17 @@ public class TestFifo {
 		fifo.ajouter("6");
 		
 		System.out.println(fifo.estVide());
-		
-		System.out.println(fifo);
-		
-//		while (!fifo.estVide()) {
-//			System.out.println(fifo.retirer());
-//		}
+
+        System.out.println(fifo);
+
+        fifo.retirer();
+        fifo.retirer();
+
+        System.out.println(fifo);
+
+        System.out.println(fifo.contient("10"));
+        System.out.println(fifo.contient("6"));
+        System.out.println(fifo.contient("1"));
 	}
 
 }
