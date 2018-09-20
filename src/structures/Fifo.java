@@ -36,6 +36,7 @@ public class Fifo<E> {
 		
 		if (estVide()) {
 			tete = cellule;
+			queue = cellule;
 		}
 		
 		queue = cellule;
