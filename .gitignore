@@ -12,3 +12,6 @@ out/
 *.ipr
 *.iws
 *.iml
+
+# Spécifique
+explore.txt
