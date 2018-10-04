@@ -111,7 +111,9 @@ public class LabyrintheToComplete
         int x;
         int y;
 
+        System.out.println("Arrivée = " + arrivee);
         while (!exploration.estVide() && !exploration.sommet().equals(arrivee)) {
+            System.out.println(exploration.sommet());
             x = exploration.sommet().getLigne();
             y = exploration.sommet().getColonne();
 
@@ -142,6 +144,7 @@ public class LabyrintheToComplete
         }
 
         if (!exploration.estVide()) {
+            System.out.println("Sommet = " + exploration.sommet() + "Arrivée = " + arrivee);
             return true;
         }
         return false;
