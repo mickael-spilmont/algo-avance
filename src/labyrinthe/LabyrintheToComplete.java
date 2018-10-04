@@ -1,7 +1,7 @@
+package labyrinthe;
 
-package divers;
+import ressourcesProfesseur.Pile;
 
-import dataStructures.Coord;
 import java.util.Random;
 
 /**
@@ -104,7 +104,46 @@ public class LabyrintheToComplete
     
     public boolean rechercheChemin()
     {
-        // to do!
+//        Création de la pile de suivie de l'exploration
+        Pile<Coord> exploration = new Pile<>();
+        exploration.empiler(depart);
+//        les coordonées de la case sur laquelle on se trouve
+        int x;
+        int y;
+
+        while (!exploration.estVide() && !exploration.sommet().equals(arrivee)) {
+            x = exploration.sommet().getLigne();
+            y = exploration.sommet().getColonne();
+
+//            Regarder à gauche
+            if (tab[y][x + 1] == VIDE || tab[y][x + 1] == ARRIVEE) {
+                tab[y][x + 1] = MARQUE;
+                exploration.empiler(new Coord(x + 1, y));
+            }
+//            Regarder en bas
+            else if (tab[y + 1][x] == VIDE || tab[y + 1][x] == ARRIVEE) {
+                tab[y + 1][x] = MARQUE;
+                exploration.empiler(new Coord(x, y + 1));
+            }
+//            Regarder à droite
+            else if (tab[y][x - 1] == VIDE || tab[y][x - 1] == ARRIVEE) {
+                tab[y][x - 1] = MARQUE;
+                exploration.empiler(new Coord(x - 1, y));
+            }
+//            Regarder en haut
+            else if (tab[y - 1][x] == VIDE || tab[y - 1][x] == ARRIVEE) {
+                tab[y - 1][x] = MARQUE;
+                exploration.empiler(new Coord(x, y -1));
+            }
+//            Si aucun chemin n'est trouvé
+            else {
+                exploration.depiler();
+            }
+        }
+
+        if (!exploration.estVide()) {
+            return true;
+        }
         return false;
     }
 }

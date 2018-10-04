@@ -12,8 +12,8 @@ public class EssaiLabyrintheAlea
     {
         LabyrintheToComplete laby = new LabyrintheToComplete(40);
         System.out.println(laby);
-        
-        laby.rechercheChemin();
+
+        System.out.println(laby.rechercheChemin());
         System.out.println("recherche itérative\n" + laby + "\n"); 
     }
 }
