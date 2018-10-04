@@ -108,43 +108,45 @@ public class LabyrintheToComplete
         Pile<Coord> exploration = new Pile<>();
         exploration.empiler(depart);
 //        les coordonées de la case sur laquelle on se trouve
-        int x;
-        int y;
+        int lig;
+        int col;
 
-        System.out.println("Arrivée = " + arrivee);
         while (!exploration.estVide() && !exploration.sommet().equals(arrivee)) {
-            System.out.println(exploration.sommet());
-            x = exploration.sommet().getLigne();
-            y = exploration.sommet().getColonne();
+            lig = exploration.sommet().getLigne();
+            col = exploration.sommet().getColonne();
 
 //            Regarder à gauche
-            if (tab[y][x + 1] == VIDE || tab[y][x + 1] == ARRIVEE) {
-                tab[y][x + 1] = MARQUE;
-                exploration.empiler(new Coord(x + 1, y));
+            if (tab[lig][col + 1] == VIDE || tab[lig][col + 1] == ARRIVEE) {
+                tab[lig][col + 1] = PASSAGE;
+                exploration.empiler(new Coord(lig, col + 1));
             }
 //            Regarder en bas
-            else if (tab[y + 1][x] == VIDE || tab[y + 1][x] == ARRIVEE) {
-                tab[y + 1][x] = MARQUE;
-                exploration.empiler(new Coord(x, y + 1));
+            else if (tab[lig + 1][col] == VIDE || tab[lig + 1][col] == ARRIVEE) {
+                tab[lig + 1][col] = PASSAGE;
+                exploration.empiler(new Coord(lig + 1, col));
             }
 //            Regarder à droite
-            else if (tab[y][x - 1] == VIDE || tab[y][x - 1] == ARRIVEE) {
-                tab[y][x - 1] = MARQUE;
-                exploration.empiler(new Coord(x - 1, y));
+            else if (tab[lig][col - 1] == VIDE || tab[lig][col - 1] == ARRIVEE) {
+                tab[lig][col - 1] = PASSAGE;
+                exploration.empiler(new Coord(lig, col - 1));
             }
 //            Regarder en haut
-            else if (tab[y - 1][x] == VIDE || tab[y - 1][x] == ARRIVEE) {
-                tab[y - 1][x] = MARQUE;
-                exploration.empiler(new Coord(x, y -1));
+            else if (tab[lig - 1][col] == VIDE || tab[lig - 1][col] == ARRIVEE) {
+                tab[lig - 1][col] = PASSAGE;
+                exploration.empiler(new Coord(lig - 1, col));
             }
 //            Si aucun chemin n'est trouvé
             else {
+//                Permet de ne pas remplacer le départ par une marque
+                if (!exploration.sommet().equals(depart)) {
+                    tab[lig][col] = MARQUE;
+                }
                 exploration.depiler();
             }
         }
 
         if (!exploration.estVide()) {
-            System.out.println("Sommet = " + exploration.sommet() + "Arrivée = " + arrivee);
+            tab[exploration.sommet().getLigne()][exploration.sommet().getColonne()] = ARRIVEE;
             return true;
         }
         return false;
