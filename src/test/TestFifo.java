@@ -1,6 +1,6 @@
 package test;
 
-import structures.Fifo;
+import dataStructures.Fifo;
 
 public class TestFifo {
 

@@ -1,4 +1,4 @@
-package structures;
+package dataStructures;
 
 /**
  * File d'attente fonctionnant sur le principe du first in first out
