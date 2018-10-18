@@ -164,8 +164,10 @@ public class RecursiveList<E>
      */
     public int longueur()
     {
-        // to do!
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (this.estVide()){
+        	return 0;
+        }
+        return 1 + this.corps().longueur();
     }
 
     /**
@@ -175,8 +177,13 @@ public class RecursiveList<E>
      */
     public boolean contient(E value)
     {
-        // to do!
-        throw new UnsupportedOperationException("Not supported yet.");
+    	if (this.estVide()) {
+    		return false;
+    	}
+    	else if (this.tete().equals(value)) {
+        	return true;
+        }
+        return this.corps().contient(value);
     }
     
     /**
@@ -197,20 +204,31 @@ public class RecursiveList<E>
      * @return une chaîne de caractères comportant les éléments de la liste
      */
     @Override 
-    public String toString ()
-    {
-        // to do!
-        throw new UnsupportedOperationException("Not supported yet.");
+    public String toString () {
+        if (this.estVide()) {
+        	return "()";
+        }
+        return "(" + this.creerChaineToString();
+    }
+    
+    private String creerChaineToString() {
+    	if (this.estVide()) {
+    		return ")";
+    	}
+    	return this.tete() + "," + this.corps().creerChaineToString();
     }
 
     /**
      * Modifie le liste en y ajoutant en fin la valeur fournie en argument.
      * @param value valeur à ajouter en fin de la liste
      */
-    public void ajouterEnFin(E value)
-    {
-        // to do!
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void ajouterEnFin(E value) {
+        if (this.estVide()) {
+        	this.ajouterEnTete(value);
+        }
+        else {
+        	this.corps().ajouterEnFin(value);
+        }
     }
       	
     /**
