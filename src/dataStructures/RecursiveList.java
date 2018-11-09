@@ -180,7 +180,7 @@ public class RecursiveList<E>
     	if (this.estVide()) {
     		return false;
     	}
-    	else if (this.tete().equals(value)) {
+    	if (this.tete().equals(value)) {
         	return true;
         }
         return this.corps().contient(value);
@@ -208,12 +208,12 @@ public class RecursiveList<E>
         if (this.estVide()) {
         	return "()";
         }
-        return "(" + this.creerChaineToString();
+        return "(" + this.creerChaineToString() + ")";
     }
     
     private String creerChaineToString() {
-    	if (this.estVide()) {
-    		return ")";
+    	if (this.corps().estVide()) {
+    		return this.tete().toString();
     	}
     	return this.tete() + "," + this.corps().creerChaineToString();
     }
@@ -241,8 +241,13 @@ public class RecursiveList<E>
     
     public RecursiveList<E> sublistBeginningWith(E value)
     {
-        // to do!
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (this.estVide()) {
+        	return null;
+        }
+        if (this.tete().equals(value)) {
+        	return this;
+        }
+        return this.corps().sublistBeginningWith(value);
     }
     
     /**

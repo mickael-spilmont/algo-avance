@@ -15,7 +15,7 @@ public class TestRecursiveList {
 //		Test de longueur
 		System.out.println(liste1.longueur());
 		
-//		Test de contiens
+//		Test de contient
 		System.out.println(liste1.contient(5));
 		
 //		Test de ajouter en fin
@@ -23,6 +23,9 @@ public class TestRecursiveList {
 		
 //		Test du toString
 		System.out.println(liste1);
+		
+//		Test de sublistBeginningWith
+		System.out.println(liste1.sublistBeginningWith(5));
 
 		System.out.println("Fin de l'execution");
 	}
