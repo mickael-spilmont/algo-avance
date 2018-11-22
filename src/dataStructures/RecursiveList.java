@@ -45,7 +45,7 @@ public class RecursiveList<E>
         }
     }   // Fin de la classe interne "CellOfList<T>"
     
- // attribut de la classe "RecursiveList<E>"
+ // attribut de la classe "Liste<E>"
     private CellOfList <E> firstCell;
 
  // constructeurs
@@ -164,10 +164,9 @@ public class RecursiveList<E>
      */
     public int longueur()
     {
-        if (this.estVide()){
-        	return 0;
-        }
-        return 1 + this.corps().longueur();
+        if (estVide())
+            return 0;
+        return 1 + corps().longueur();
     }
 
     /**
@@ -177,13 +176,11 @@ public class RecursiveList<E>
      */
     public boolean contient(E value)
     {
-    	if (this.estVide()) {
-    		return false;
-    	}
-    	if (this.tete().equals(value)) {
-        	return true;
-        }
-        return this.corps().contient(value);
+        if (estVide())
+            return false;
+        if (value.equals(tete()))
+            return true;
+        return corps().contient(value);
     }
     
     /**
@@ -193,42 +190,47 @@ public class RecursiveList<E>
      */
     public boolean contientIt(E value)
     {
-        // to do!
-        throw new UnsupportedOperationException("Not supported yet.");
+        RecursiveList<E> l = this;
+        while (!l.estVide())
+            if (value.equals(l.tete()))
+                return true;
+            else
+                l = l.corps();
+        return false;
     }
     
     /**
      * <pre>Fournit une chaîne de caractères selon le format:
-     *    "()"  si la liste est vide, "(e1,e2, ..., en)" pour une liste de n éléments.
+     *    "()"    si la liste est vide,  "(e1,e2, ..., en)" pour une liste de n éléments.
      * </pre>
      * @return une chaîne de caractères comportant les éléments de la liste
      */
     @Override 
-    public String toString () {
-        if (this.estVide()) {
-        	return "()";
-        }
-        return "(" + this.creerChaineToString() + ")";
+    public String toString ()
+    {
+        if (estVide())
+            return "()";
+        return  "(" + contenu() + ")";
     }
     
-    private String creerChaineToString() {
-    	if (this.corps().estVide()) {
-    		return this.tete().toString();
-    	}
-    	return this.tete() + "," + this.corps().creerChaineToString();
+    private String contenu()
+    {
+        // hypothèse, précondition: la liste n'est pas vide.
+        if (corps().estVide())
+            return tete().toString();
+        return tete() + "," + corps().contenu();
     }
 
     /**
      * Modifie le liste en y ajoutant en fin la valeur fournie en argument.
      * @param value valeur à ajouter en fin de la liste
      */
-    public void ajouterEnFin(E value) {
-        if (this.estVide()) {
-        	this.ajouterEnTete(value);
-        }
-        else {
-        	this.corps().ajouterEnFin(value);
-        }
+    public void ajouterEnFin(E value)
+    {
+        if (estVide())
+            ajouterEnTete(value);
+        else
+            corps().ajouterEnFin(value);
     }
       	
     /**
@@ -241,13 +243,11 @@ public class RecursiveList<E>
     
     public RecursiveList<E> sublistBeginningWith(E value)
     {
-        if (this.estVide()) {
-        	return null;
-        }
-        if (this.tete().equals(value)) {
-        	return this;
-        }
-        return this.corps().sublistBeginningWith(value);
+        if (estVide())
+            return this;
+        if (tete().equals(value))
+            return this;
+        return corps().sublistBeginningWith(value);
     }
     
     /**
@@ -259,39 +259,64 @@ public class RecursiveList<E>
      */
     public void supprimerFirst(E value)
     {
-        // to do!
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (estVide())
+            return;
+        if (value.equals (tete()))
+            supprimerEnTete();
+        else
+            corps().supprimerFirst(value); 
+        
+        /*  ou:
+         {    Liste l = this.sublistBeginningWith(value);
+              if (!l.estVide ())
+                    l.supprimerEnTete ();
+         } */
     }
 
     /**
+     * 
      * Supprime de la liste toutes les occurrences de la valeur fournie en argument.
      * @param value valeur à supprimer
      */
     public void	supprimerAll(E value)
     {
-        // to do!
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (!this.estVide())
+            if (value.equals(tete()))	
+            {
+                this.supprimerEnTete();
+                this.supprimerAll(value);
+            }
+            else	
+                this.corps().supprimerAll(value);
     }
             
     /**
      * Renvoie une copie ("clone") de la liste. Les éléments eux-mêmes ne sont pas clonés.
      * @return  une nouvelle liste, copie conforme de la liste (this).
      */
+
     public RecursiveList<E> copie()
     {
-        // to do!
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (estVide())
+            return new RecursiveList<>();
+        return new RecursiveList<>(tete(), corps().copie());
     }
 	
     /**
      * Détermine si la liste (this) est identique à celle fournie en argument.
+     * 
      * @param autre liste d'éléments de "type" E
      * @return true iff les 2 listes sont identiques.
      */
     public boolean equals(RecursiveList<E> autre)
     {
-        // to do!
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (estVide())
+            return autre.estVide();
+        if (autre.estVide())
+            return false;
+        if (!tete().equals(autre.tete()))
+            return false;
+        return corps().equals(autre.corps());
     }
 
     /**
@@ -300,25 +325,28 @@ public class RecursiveList<E>
      */
     public void concatener(RecursiveList<E> autre) // modification de la liste (this)
     {
-        // to do!
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (estVide())
+            setList(autre);
+        else
+            corps().concatener(autre);
     }
 
     /**
      * Fournit une nouvelle liste indépendante formée des éléments de la liste (this)
      * suivis de ceux de la liste fournie en argument.
      * Remarque: les éléments eux-mêmes ne sont pas "clonés".
+     * 
      * @param  autre     liste d'éléments de "type" E
      * @return      une nouvelle liste comportant les valeurs de la liste (this) 
      *              suivies de celles de l'autre liste.
      */
     public RecursiveList<E> concatenation(RecursiveList<E> autre) 
     {
-        // to do!
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (estVide()) return autre.copie();
+        return new RecursiveList<>(tete(), corps().concatenation(autre));
     }
     
-    /**
+     /**
      * Fournit une nouvelle liste, une liste "miroir" des éléments de la liste.
      * Remarques:   les éléments ne sont pas clonés,
      *              <b>version particulièrement inefficace!!!</b>
@@ -340,10 +368,17 @@ public class RecursiveList<E>
      *              <b>version efficace!</b>
      * @return  une nouvelle liste, le "miroir" de la liste.
      */
+ 
     public RecursiveList<E> miroirIteratif()
     {
-        // to do!
-        throw new UnsupportedOperationException("Not supported yet.");
+        RecursiveList<E> local = this;
+        RecursiveList<E> result = new RecursiveList<>();
+        while (!local.estVide())
+        {
+            result.ajouterEnTete(local.tete());
+            local = local.corps();
+        }
+        return result;
     }
     
     /**
@@ -355,12 +390,15 @@ public class RecursiveList<E>
      *    i.e. on retrouve toutes les valeurs (dans le même ordre) de la liste.    
      * </PRE>
      * @param autre     liste d'éléments de "type" E
-     * @return true 	iff la liste est une "sous-liste" de l'autre liste.
+     * @return      true iff la liste est une "sous-liste" de l'autre liste.
      */
     public boolean estSousListe(RecursiveList<E> autre)
     {
-        // to do!
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (estVide())  return true;
+        if (autre.estVide())    return false;
+        if (tete().equals(autre.tete()))
+            return corps().estSousListe(autre.corps());
+        return estSousListe(autre.corps());
     }
 
     /**
@@ -371,25 +409,38 @@ public class RecursiveList<E>
      */    
     public Object[] toArray()
     {
-        // to do!
-        throw new UnsupportedOperationException("Not supported yet.");
+        ArrayList<E> aL = new ArrayList<>(); // par simplicité
+        RecursiveList<E> l = this;
+        while (!l.estVide())
+        {
+            aL.add(l.tete());
+            l = l.corps();
+        }
+        return aL.toArray(); // invocation de la méthode toArray() de la classe ArrayList!
     }
     
     /**
      * Fournit un vecteur d'objets typés (E) comportant les éléments de la liste.
      * Remarque: les éléments ne sont pas clonés.
+     * 
      * Exemple d'utisation:
-     *      RecursiveList<Machin> l= new RecursiveList<>();
+     *      RecursiveList<String> l= new RecursiveList<>();
      *      // ... remplissage de la liste
-     *      Machin[] trucs = l.toArray(new Machin[0]);
+     *      String[] mots = l.toArray(new String[0]);
      * 
      * @param   existingArrayOfE  vecteur (d'éléments de type E) existant.
      * @return  un vecteur d'éléments comportant les éléments de la liste.
      */    
     public E[] toArray(E[] existingArrayOfE)
     {
-        // to do!
-        throw new UnsupportedOperationException("Not supported yet.");
+        ArrayList<E> aL = new ArrayList<>();
+        RecursiveList<E> l = this;
+        while (!l.estVide())
+        {
+            aL.add(l.tete());
+            l = l.corps();
+        }
+        return aL.toArray(existingArrayOfE);
     }
     
     /**
@@ -401,13 +452,13 @@ public class RecursiveList<E>
      */
     public RecursiveList(E [] array)
     {
-        // to do!
-        throw new UnsupportedOperationException("Not supported yet.");
+            this(); // invocation du 1er constructeur
+            for (int index = array.length - 1; index >= 0; index --)
+                ajouterEnTete(array[index]);
     }
     
     /**
      * Constructeur pour obtenir une liste à partir d'éléments fournis par une "Collection" Java.
-     *
      * L'ordre des éléments de la liste construite est l'ordre inverse de celui obtenu à l'aide 
      * d'un "for each statement" de la collection.
      * 
@@ -415,7 +466,39 @@ public class RecursiveList<E>
      */
     public RecursiveList(Collection<E> coll)
     {
-        // to do!
-        throw new UnsupportedOperationException("Not supported yet.");
+            this(); // invocation du 1er constructeur
+            for (E elt: coll)
+                ajouterEnTete(elt);
+    }  
+    
+    public boolean isASet()       
+    {
+        if (this.estVide())
+            return true;
+        if (this.corps().contient(this.tete()))
+                return false;
+        return this.corps().isASet();
+    }
+    
+    public void makeSet()
+    {
+        if (this.estVide())
+            return;
+        if (this.corps().contient(this.tete()))
+        {
+            this.supprimerEnTete();
+            this.makeSet();
+        }
+        else
+            this.corps().makeSet();
+    }
+    
+    public RecursiveList<E> toSet()
+    {
+        if (this.estVide())
+            return new RecursiveList<>();
+        if (this.corps().contient(this.tete()))
+            return this.corps().toSet();
+        return new RecursiveList<>(this.tete(), this.corps().toSet());
     }
 }

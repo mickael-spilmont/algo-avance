@@ -62,7 +62,7 @@ public class BinaryTree<E> {
 	 * @return true si l'arbre est une feuille
 	 */
 	public boolean estUneFeuille() {
-		return racine.gauche == null && racine.droit == null;
+		return this.getGauche().estVide() && this.getDroit().estVide();
 	}
 	
 	/**
@@ -121,6 +121,16 @@ public class BinaryTree<E> {
 //		this.racine.droit = tree;
 //	}
 	
+	public String toString() {
+		if (this.estVide()) {
+			return "";
+		}
+		if (this.estUneFeuille()) {
+			return this.getRacine().toString();
+		}
+		return this.getRacine() + "(" + this.getGauche() + ", " + this.getDroit() + ")";
+	}
+	
 	/**
 	 * Affichage de l'arbre dans l'ordre prefixe (racine, gauche, droit)
 	 * @return
@@ -154,4 +164,27 @@ public class BinaryTree<E> {
 		return this.getGauche().affichageSuffixe() + this.getDroit().affichageSuffixe() + this.getRacine() + " ";
 	}
 	
+	/**
+	 * Permet de savoir si l'arbre est binaire pur.
+	 * @return true si il l'est, et false dans la cas contraire
+	 */
+	public boolean estBinairePur() {
+		if (this.estVide() || this.estUneFeuille()) {
+			return true;
+		}
+		if (this.getGauche().estVide() || this.getDroit().estVide()) {
+			return false;
+		}
+		return this.getGauche().estBinairePur() && this.getDroit().estBinairePur();
+	}
+	
+	public RecursiveList<E> getFeuillage() {
+		 if (this.estVide()) {
+			 return new RecursiveList<>();
+		 }
+		 if (this.estUneFeuille()) {
+			 return new RecursiveList<>(this.getRacine());
+		 }
+		 return this.getGauche().getFeuillage().concatenation(this.getDroit().getFeuillage());
+	}
 }
